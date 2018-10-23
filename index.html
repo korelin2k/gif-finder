@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/vendor/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/vendor/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.scss" />
     <script src="assets/javascript/jquery-3.3.1.min.js"></script>
     <script src="assets/javascript/popper.min.js"></script>
     <script src="assets/javascript/bootstrap.min.js"></script>
@@ -15,14 +15,33 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row search-bar">
-            <div class="input-group col">
-                <input class="form-control border-right-0 border" type="search" value="Search Movies" id="search-movies">
-                <span class="input-group-append">
-                    <button class="btn btn-outline-secondary border-left-0 border" type="button">
-                        <i class="fa fa-search"></i>
+        <div class="row">
+            <div class="col p-0 m-0">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
+                    <a class="navbar-brand" href="#"><img src="assets/images/movie-logo.png" width="200" height="100"></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
                     </button>
-                </span>
+                  
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                          <a class="nav-link text-warning" href="#">My Favorites</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link text-warning" href="#">Reset</a>
+                        </li>
+                      </ul>
+                      <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search Movies" aria-label="Search">
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                      </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col search-results bg-warning">
             </div>
         </div>
         <div class="row">

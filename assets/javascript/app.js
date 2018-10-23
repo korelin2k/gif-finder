@@ -1,9 +1,6 @@
-const omdbAPIKey = '6edcc50';
-const giphyAPIKey = '4mVcUe5J1XlxtySdI87CuK0TTQw7yWgJ';
-
 let moviesCollection = {
     movies: [],
-    omdbEndpoint: 'http://www.omdbapi.com/?apikey=' + omdbAPIKey,
+    omdbAPIKey: '6edcc50',
 
     returnMovies: function() {
         return moviesCollection.movies;
@@ -11,23 +8,71 @@ let moviesCollection = {
 
     addMovie: function(addMovieName) {
         // ajax call to check if the movie is valid
-        omdbSearchURL = moviesCollection.omdbEndpoint;
+        let searchResultsSelector = $('.search-results');
+        let omdbSearchURL = 'http://www.omdbapi.com/?apikey=' + moviesCollection.omdbAPIKey;
         $.ajax({
             url: omdbSearchURL,
             method: 'GET',
             data: { 
-                s: addMovieName
+                s: addMovieName,
+                type: 'movie'
             },
         })
         .then(function(omdbResultCall) {
+            console.log(omdbResultCall);
             // Movie exists
             if(omdbResultCall.Response === 'True') {
-                moviesCollection.movies.push(addMovieName);
-                console.log('Movie exists');
+                omdbTotalResults = parseInt(omdbResultCall.totalResults);
+
+                if (omdbTotalResults === 1) {
+                    moviesCollection.movies.push(addMovieName);
+                } else if (omdbTotalResults >= 1) {
+                    
+                    for (i in omdbResultCall.Search) {
+                        let omdbResult = omdbResultCall.Search[i];
+                        let omdbPoster = omdbResult.Poster;
+
+                        if (omdbPoster === 'N/A') {
+                            omdbPoster = 'assets/images/blank-movie.jpg';
+                        }
+
+                        let movieCardBlock = $('<div>');
+                        movieCardBlock.addClass('d-inline-block');
+
+                        let movieCardSep = $('<div>');
+                        movieCardSep.addClass('card my-2 mx-2');
+                        movieCardSep.attr('style', 'width: 8rem;');
+
+                        let movieCardHeader = $('<div>');
+                        movieCardHeader.addClass('card-header p-2 text-center');
+
+                        let movieCardImg = $('<img>')
+                        movieCardImg.attr({
+                            src: omdbPoster, 
+                            alt: omdbResult.Title,
+                            width: '100px',
+                            height: '150px'
+                        });
+
+                        movieCardHeader.append(movieCardImg);
+                        movieCardSep.append(movieCardHeader);
+                        movieCardBlock.append(movieCardSep);
+
+                        $('.search-results').append(movieCardBlock);
+                        $('.search-results').show();
+                    }
+
+                    console.log(parseInt(omdbResultCall.totalResults));
+                    console.log(omdbResultCall);
+                }
             } else {
                 console.log('Movie doesnt exist');
             }
         });
+    },
+
+    addMoviePopup: function() {
+
     },
 
     removeMovie: function(removeMovieName) {
@@ -44,19 +89,24 @@ let moviesCollection = {
 
 let cardCollection = {
     cards: {},
-    giphyEndpoint: 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPIKey,
+    giphyAPIKey: '4mVcUe5J1XlxtySdI87CuK0TTQw7yWgJ',
     displayCardSelector: '.display-cards',
 
     searchGifs: function(movieName) {
+        let giphyEndpoint = 'https://api.giphy.com/v1/gifs/search?api_key=' + cardCollection.giphyAPIKey;
+
+        const gifRating = 'G';
+        const gifLang = 'en';
+
         $.ajax({
-            url: cardCollection.giphyEndpoint,
+            url: giphyEndpoint,
             method: 'GET',
             data: { 
                 q: movieName,
                 limit: 10,
                 offset: 0,
-                rating: 'G',
-                lang: 'en'
+                rating: gifRating,
+                lang: gifLang
             },
         })
         .then(function(giphyResultCall) {
