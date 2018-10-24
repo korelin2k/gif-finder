@@ -253,6 +253,7 @@ function stringReplaceSpecialCharacters(stringInput) {
 // https://stackoverflow.com/questions/18837735/check-if-image-exists-on-server-using-javascript
 function imageExists(image_url){
     returnImageCheck = false;
+    image_url = image_url.replace('http:', 'https:')
 
     let http = new XMLHttpRequest();
 
