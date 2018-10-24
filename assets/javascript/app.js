@@ -46,7 +46,11 @@ let moviesCollection = {
                         let movieCardHeader = $('<div>');
                         movieCardHeader.addClass('card-header p-2 text-center');
 
-                        let movieCardImg = $('<img>')
+                        let movieCardLabel = $('<label>');
+                        movieCardLabel.addClass('image-checkbox');
+
+                        let movieCardImg = $('<img>');
+                        movieCardImg.addClass('img-responsive');
                         movieCardImg.attr({
                             src: omdbPoster, 
                             alt: omdbResult.Title,
@@ -54,12 +58,25 @@ let moviesCollection = {
                             height: '150px'
                         });
 
-                        movieCardHeader.append(movieCardImg);
+                        let movieCardInput = $('<input>');
+                        movieCardInput.attr({
+                            type: 'checkbox',
+                            name: 'image[]',
+                            value: ''
+                        });
+
+                        let movieCardIcon = $('<i>');
+                        movieCardIcon.addClass('fa fa-check hidden');
+
+                        movieCardLabel.append(movieCardImg, movieCardInput, movieCardIcon);
+
+                        movieCardHeader.append(movieCardLabel);
                         movieCardSep.append(movieCardHeader);
                         movieCardBlock.append(movieCardSep);
 
                         $('.search-results').append(movieCardBlock);
                         $('.search-results').show();
+                        $('.footer-add-movies').show();
                     }
 
                     console.log(parseInt(omdbResultCall.totalResults));
@@ -125,7 +142,7 @@ let cardCollection = {
     createCard: function(displayCard) {
         console.log(displayCard);
         let cardDiv = $('<div>');
-        cardDiv.addClass('card m-2');
+        cardDiv.addClass('card m-2 image-checkbox');
         cardDiv.attr('style', 'width: 18rem;')
 
         let imgCard = $('<img>');
@@ -174,7 +191,7 @@ let cardCollection = {
 }
 
 console.log(moviesCollection.returnMovies());
-moviesCollection.addMovie('Indiana Jones');
+moviesCollection.addMovie('Batman');
 moviesCollection.addMovie('TestCrazyHell');
 console.log(moviesCollection.returnMovies());
 moviesCollection.removeMovie('what');
@@ -197,6 +214,16 @@ $( document ).ready(function() {
             $(this).attr('src', cardStatic);
         }
         
+    });
+    
+    // sync the state to the input
+    $(document).on('click', ".image-checkbox", function(e) {
+        $(this).toggleClass('image-checkbox-checked');
+        var $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop("checked",!$checkbox.prop("checked"))
+        $(this).find('i').toggleClass('hidden');
+    
+        e.preventDefault();
     });
 });
 
