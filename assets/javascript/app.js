@@ -9,7 +9,7 @@ let moviesCollection = {
     searchForMovies: function(addMovieName) {
         // ajax call to check if the movie is valid
         let searchResultsSelector = $('.search-results');
-        let omdbSearchURL = 'http://www.omdbapi.com/?apikey=' + moviesCollection.omdbAPIKey;
+        let omdbSearchURL = 'https://www.omdbapi.com/?apikey=' + moviesCollection.omdbAPIKey;
         $.ajax({
             url: omdbSearchURL,
             method: 'GET',
