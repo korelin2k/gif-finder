@@ -17,11 +17,11 @@
 }
 
 .image-checkbox-checked {
-	border-color: rgb(255, 0, 0);
+	border-color: #4484CE;
 }
 .image-checkbox .fa {
   position: absolute;
-  color: rgb(255, 0, 0);
+  color: #4484CE;
   background-color: #fff;
   padding: 10px;
   top: 12;
@@ -50,4 +50,16 @@
 
 .footer-add-favorites {
 	display: none;
+}
+
+.bg-primary, .btn-primary {
+	background-color: #4484CE;
+}
+
+.primary-screen {
+	display: none;
+}
+
+.search-screen {
+	max-width: 800px;
 }

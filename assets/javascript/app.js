@@ -6,7 +6,7 @@ let moviesCollection = {
         return moviesCollection.movies;
     },
 
-    addMovie: function(addMovieName) {
+    searchForMovies: function(addMovieName) {
         // ajax call to check if the movie is valid
         let searchResultsSelector = $('.search-results');
         let omdbSearchURL = 'http://www.omdbapi.com/?apikey=' + moviesCollection.omdbAPIKey;
@@ -32,52 +32,52 @@ let moviesCollection = {
                         let omdbResult = omdbResultCall.Search[i];
                         let omdbPoster = omdbResult.Poster;
 
-                        if (omdbPoster === 'N/A') {
-                            omdbPoster = 'assets/images/blank-movie.jpg';
+                        // Filter out movies that don't have a poster;
+                        if (omdbPoster !== 'N/A' && imageExists(omdbPoster)) {
+                            let movieCardBlock = $('<div>');
+                            movieCardBlock.addClass('d-inline-block');
+
+                            let movieCardSep = $('<div>');
+                            movieCardSep.addClass('card my-2 mx-2');
+                            movieCardSep.attr('style', 'width: 8rem;');
+
+                            let movieCardHeader = $('<div>');
+                            movieCardHeader.addClass('card-header p-2 text-center');
+
+                            let movieCardLabel = $('<label>');
+                            movieCardLabel.addClass('image-checkbox');
+
+                            let movieCardImg = $('<img>');
+                            movieCardImg.addClass('img-responsive');
+                            movieCardImg.attr({
+                                src: omdbPoster, 
+                                alt: omdbResult.Title,
+                                width: '100px',
+                                height: '150px'
+                            });
+
+                            let movieCardInput = $('<input>');
+                            movieCardInput.attr({
+                                type: 'checkbox',
+                                name: 'image[]',
+                                value: ''
+                            });
+
+                            let movieCardIcon = $('<i>');
+                            movieCardIcon.addClass('fa fa-check hidden');
+
+                            movieCardLabel.append(movieCardImg, movieCardInput, movieCardIcon);
+
+                            movieCardHeader.append(movieCardLabel);
+                            movieCardSep.append(movieCardHeader);
+                            movieCardBlock.append(movieCardSep);
+
+                            $('.search-results').append(movieCardBlock);
                         }
-
-                        let movieCardBlock = $('<div>');
-                        movieCardBlock.addClass('d-inline-block');
-
-                        let movieCardSep = $('<div>');
-                        movieCardSep.addClass('card my-2 mx-2');
-                        movieCardSep.attr('style', 'width: 8rem;');
-
-                        let movieCardHeader = $('<div>');
-                        movieCardHeader.addClass('card-header p-2 text-center');
-
-                        let movieCardLabel = $('<label>');
-                        movieCardLabel.addClass('image-checkbox');
-
-                        let movieCardImg = $('<img>');
-                        movieCardImg.addClass('img-responsive');
-                        movieCardImg.attr({
-                            src: omdbPoster, 
-                            alt: omdbResult.Title,
-                            width: '100px',
-                            height: '150px'
-                        });
-
-                        let movieCardInput = $('<input>');
-                        movieCardInput.attr({
-                            type: 'checkbox',
-                            name: 'image[]',
-                            value: ''
-                        });
-
-                        let movieCardIcon = $('<i>');
-                        movieCardIcon.addClass('fa fa-check hidden');
-
-                        movieCardLabel.append(movieCardImg, movieCardInput, movieCardIcon);
-
-                        movieCardHeader.append(movieCardLabel);
-                        movieCardSep.append(movieCardHeader);
-                        movieCardBlock.append(movieCardSep);
-
-                        $('.search-results').append(movieCardBlock);
-                        $('.search-results').show();
-                        $('.footer-add-movies').show();
                     }
+
+                    $('.search-results').show();
+                    $('.footer-add-movies').show();
 
                     console.log(parseInt(omdbResultCall.totalResults));
                     console.log(omdbResultCall);
@@ -88,12 +88,15 @@ let moviesCollection = {
         });
     },
 
-    addMoviePopup: function() {
+    addMovie: function(movieName) {
+        moviesCollection.movies.push(movieName);
 
+        $('.search-results').empty().hide();
+        $('.footer-add-movies').hide();
     },
 
     removeMovie: function(removeMovieName) {
-        var movieLocation = moviesCollection.movies.indexOf(removeMovieName);
+        let movieLocation = moviesCollection.movies.indexOf(removeMovieName);
  
         // If Found
         if (movieLocation > -1) {
@@ -154,6 +157,7 @@ let cardCollection = {
             static: displayCard.images.fixed_height_still.url,
             animated: displayCard.images.fixed_height.url
         });
+
         cardDiv.append(imgCard);
 
         let cardBodyDiv = $('<div>');
@@ -190,18 +194,21 @@ let cardCollection = {
     },
 }
 
-console.log(moviesCollection.returnMovies());
-moviesCollection.addMovie('Batman');
-moviesCollection.addMovie('TestCrazyHell');
-console.log(moviesCollection.returnMovies());
-moviesCollection.removeMovie('what');
-moviesCollection.removeMovie('TestCrazyHell');
-console.log(moviesCollection.returnMovies());
-cardCollection.searchGifs('Indiana Jones');
-cardCollection.searchGifs('The Incredibles');
-
 // Loads when the document started
 $( document ).ready(function() {
+    $(document).on('click', ".movie-search", function() {
+        event.preventDefault();
+        let movieSearchLocation = $(this).attr('data-search-name');
+        let movieSearchString = $('.' + movieSearchLocation).val();
+        console.log("Search String: " + movieSearchString);
+
+        moviesCollection.searchForMovies(movieSearchString);
+        $('.movie-value').val('');
+
+        $('.search-screen').hide();
+        $('.primary-screen').show();
+    });
+
     $(document).on('click', ".card-details", function() {
         let cardId = $(this).attr('id');
         let cardSource = $(this).attr('src');
@@ -218,13 +225,22 @@ $( document ).ready(function() {
     
     // sync the state to the input
     $(document).on('click', ".image-checkbox", function(e) {
+        event.preventDefault();
         $(this).toggleClass('image-checkbox-checked');
-        var $checkbox = $(this).find('input[type="checkbox"]');
+        let $checkbox = $(this).find('input[type="checkbox"]');
         $checkbox.prop("checked",!$checkbox.prop("checked"))
         $(this).find('i').toggleClass('hidden');
-    
-        e.preventDefault();
     });
+
+    $(document).on('click', ".add-movies", function() {
+        $('.image-checkbox-checked').each(function() {
+            let movieTitle = $(this).find('img').attr('alt');
+            moviesCollection.addMovie(movieTitle);
+            cardCollection.searchGifs(movieTitle);
+
+            $(this).toggleClass('image-checkbox-checked')
+        });
+    })
 });
 
 // Special characters suck - quick function to strip those and only used for the comparison
@@ -232,4 +248,23 @@ function stringReplaceSpecialCharacters(stringInput) {
     stringInput = stringInput.replace(/[^a-zA-Z0-9]/g,'_');
 
     return stringInput;
+}
+
+// https://stackoverflow.com/questions/18837735/check-if-image-exists-on-server-using-javascript
+function imageExists(image_url){
+    returnImageCheck = false;
+
+    let http = new XMLHttpRequest();
+
+    try {
+        http.open('HEAD', image_url, false);
+        http.send();
+
+        returnImageCheck = true;
+    } catch {
+        return null;
+    }
+
+    return returnImageCheck;
+
 }

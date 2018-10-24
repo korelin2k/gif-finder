@@ -16,7 +16,32 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid search-screen h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col text-center">
+                <div class="d-block">
+                    <img src="assets/images/movie-logo.png" class="img-fluid">
+                </div>
+                <form class="card card-sm border-0 bg-secondary">
+                    <div class="card-body row no-gutters align-items-center">
+                        <!-- <div class="col-auto mr-3 text-warning">
+                            <i class="fa fa-search text-body fa-3x"></i>
+                        </div> -->
+                        <!--end of col-->
+                        <div class="col">
+                            <input class="form-control form-control-lg form-control-borderless movie-value-small" type="search" placeholder="Search Movies">
+                        </div>
+                        <!--end of col-->
+                        <div class="col-auto ml-3">
+                            <button class="btn btn-lg btn-warning movie-search" data-search-name="movie-value-small" type="submit">Search</button>
+                        </div>
+                        <!--end of col-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid primary-screen">
         <div class="row">
             <div class="col p-0 m-0">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
@@ -39,8 +64,8 @@
                             </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search Movies" aria-label="Search">
-                            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                            <input class="form-control mr-sm-2 movie-value-large" type="search" placeholder="Search Movies" aria-label="Search">
+                            <button class="btn btn-outline-warning my-2 my-sm-0 movie-search" data-search-name="movie-value-large" type="submit">Search</button>
                         </form>
                     </div>
                 </nav>
@@ -58,13 +83,13 @@
 
     <footer class="footer bg-dark footer-add-movies">
         <div class="p-3">
-            <button type="button" class="btn btn-danger add-movies">Add Movies</button>
+            <button type="button" class="btn btn-primary add-movies">Add Movies</button>
         </div>
     </footer>    
     
     <footer class="footer bg-dark footer-add-favorites">
         <div class="p-3">
-            <button type="button" class="btn btn-danger add-favorites">Add Favorites</button>
+            <button type="button" class="btn btn-primary add-favorites">Add Favorites</button>
         </div>
     </footer>
 </body>
