@@ -28,10 +28,7 @@ let moviesCollection = {
         if(movieResult.Response === 'True') {
             omdbTotalResults = parseInt(movieResult.totalResults);
 
-            if (omdbTotalResults === 1) {
-                moviesCollection.movies.push(addMovieName);
-            } else if (omdbTotalResults >= 1) {
-                
+            if (omdbTotalResults >= 1) {
                 for (i in movieResult.Search) {
                     moviesCollection.createMovieCard(movieResult.Search[i]);
                 }
@@ -162,6 +159,8 @@ let cardCollection = {
             animated: displayCard.images.fixed_height.url
         });
 
+        console.log(displayCard);
+
         cardDiv.append(imgCard);
 
         let cardBodyDiv = $('<div>');
@@ -178,11 +177,12 @@ let cardCollection = {
 
         let listItem1 = $('<li>');
         listItem1.addClass('list-group-item');
-        listItem1.text('blah');
+        listItem1.text('Rating: ' + displayCard.rating);
 
         let listItem2 = $('<li>');
         listItem2.addClass('list-group-item');
-        listItem2.text('test');
+
+        listItem2.html('<a href="' + displayCard.images.fixed_height.url + '" class="download-image" data-href="' + displayCard.images.fixed_height.url + '" download">Download</a>');
         
         let listItem3 = $('<li>');
         listItem3.addClass('list-group-item');
@@ -244,7 +244,13 @@ $( document ).ready(function() {
 
             $(this).toggleClass('image-checkbox-checked')
         });
-    })
+    });
+
+    $(document).on('click', ".download-image", function() {
+        let downloadPath = $(this).attr('data-href');
+        console.log(downloadPath);
+        downloadImage(downloadPath);
+    });
 });
 
 // https://stackoverflow.com/questions/18837735/check-if-image-exists-on-server-using-javascript
@@ -265,4 +271,12 @@ function imageExists(image_url){
 
     return returnImageCheck;
 
+}
+
+function downloadImage(downloadPath) {
+    var x=new XMLHttpRequest();
+	x.open("GET", downloadPath, true);
+	x.responseType = 'blob';
+	x.onload=function(e){download(x.response, '200.gif', "image/gif" ); }
+	x.send();
 }
