@@ -164,7 +164,7 @@ let cardCollection = {
     createCard: function(displayCard) {
         console.log(displayCard);
         let cardDiv = $('<div>');
-        cardDiv.addClass('card m-2 image-checkbox border border-dark');
+        cardDiv.addClass('card m-2 border border-dark');
         cardDiv.attr('style', 'width: 18rem;')
 
         let imgCard = $('<img>');
@@ -195,7 +195,7 @@ let cardCollection = {
 
         let listItem1 = $('<li>');
         listItem1.addClass('list-group-item');
-        listItem1.html('Rating: ' + displayCard.rating + '<i class="fa fa-heartbeat" aria-hidden="true"></i> <a href="' + displayCard.images.fixed_height.url + '" class="download-image" data-href="' + displayCard.images.fixed_height.url + '" download"><i class="fa fa-download" aria-hidden="true"></i></a>');
+        listItem1.html('<div class="container"><div class="row"><div class="col-6">Rating: ' + displayCard.rating + '</div><div class="col-6 text-right card-icon-color"><a class="download-image" data-href="' + displayCard.images.fixed_height.url + '" download"><i class="fa fa-2x fa-download" aria-hidden="true"></i></a> <i class="fa fa-2x fa-heart" aria-hidden="true"></i></div></div></div>');
 
         listGroup.append(listItem1);
         cardDiv.append(listGroup);

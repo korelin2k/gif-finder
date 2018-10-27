@@ -70,3 +70,7 @@
 .search-screen {
 	max-width: 800px;
 }
+
+.card-icon-color, .card-icon-color a {
+	color: #4484CE;
+}
