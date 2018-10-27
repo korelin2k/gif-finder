@@ -1,6 +1,7 @@
 let moviesCollection = {
     movies: [],
     omdbAPIKey: '6edcc50',
+    totalCards: 0,
 
     returnMovies: function() {
         return moviesCollection.movies;
@@ -19,6 +20,9 @@ let moviesCollection = {
             },
         })
         .then(function(omdbResultCall) {
+
+            // Clear out any movie "not found" situations
+            $('.search-output').empty();
             moviesCollection.createMovieCardCollection(omdbResultCall);
         });
     },
@@ -33,12 +37,23 @@ let moviesCollection = {
                     moviesCollection.createMovieCard(movieResult.Search[i]);
                 }
 
-                $('.search-results').show();
-                $('.footer-add-movies').show();
+                if(moviesCollection.totalCards === 0) {
+                    moviesCollection.noValidMovies();
+                } else {
+                    $('.search-results').show();
+                    $('.footer-add-movies').show();
+                }
             }
         } else {
-            console.log('Movie doesnt exist');
+            moviesCollection.noValidMovies();
         }
+
+        moviesCollection.totalCards = 0;
+    },
+
+    noValidMovies: function() {
+        $('.search-output').html("No valid movie\(s\) found");
+        $('.search-results').show();
     },
 
     createMovieCard: function(movieDetails) {
@@ -85,14 +100,17 @@ let moviesCollection = {
             movieCardSep.append(movieCardHeader);
             movieCardBlock.append(movieCardSep);
 
-            $('.search-results').append(movieCardBlock);
+            moviesCollection.totalCards++;
+
+            $('.search-output').append(movieCardBlock);
         }
     },
 
     addMovie: function(movieName) {
         moviesCollection.movies.push(movieName);
 
-        $('.search-results').empty().hide();
+        $('.search-output').empty();
+        $('.search-results').hide();
         $('.footer-add-movies').hide();
     },
 
@@ -146,7 +164,7 @@ let cardCollection = {
     createCard: function(displayCard) {
         console.log(displayCard);
         let cardDiv = $('<div>');
-        cardDiv.addClass('card m-2 image-checkbox');
+        cardDiv.addClass('card m-2 image-checkbox border border-dark');
         cardDiv.attr('style', 'width: 18rem;')
 
         let imgCard = $('<img>');
@@ -177,21 +195,9 @@ let cardCollection = {
 
         let listItem1 = $('<li>');
         listItem1.addClass('list-group-item');
-        listItem1.text('Rating: ' + displayCard.rating);
-
-        let listItem2 = $('<li>');
-        listItem2.addClass('list-group-item');
-
-        listItem2.html('<a href="' + displayCard.images.fixed_height.url + '" class="download-image" data-href="' + displayCard.images.fixed_height.url + '" download">Download</a>');
-        
-        let listItem3 = $('<li>');
-        listItem3.addClass('list-group-item');
-        listItem3.text('what');
+        listItem1.html('Rating: ' + displayCard.rating + '<i class="fa fa-heartbeat" aria-hidden="true"></i> <a href="' + displayCard.images.fixed_height.url + '" class="download-image" data-href="' + displayCard.images.fixed_height.url + '" download"><i class="fa fa-download" aria-hidden="true"></i></a>');
 
         listGroup.append(listItem1);
-        listGroup.append(listItem2);
-        listGroup.append(listItem3);
-
         cardDiv.append(listGroup);
 
         $(cardCollection.displayCardSelector).append(cardDiv);
@@ -251,6 +257,16 @@ $( document ).ready(function() {
         console.log(downloadPath);
         downloadImage(downloadPath);
     });
+
+    $(document).on('click', ".fa-window-close", function() {
+        $('.search-output').empty();
+        $('.search-results').hide();
+        $(".footer-add-movies").hide();
+    });
+
+    $(document).on('click', "#reset-screen", function() {
+        location.reload();
+    });
 });
 
 // https://stackoverflow.com/questions/18837735/check-if-image-exists-on-server-using-javascript
@@ -274,7 +290,7 @@ function imageExists(image_url){
 }
 
 function downloadImage(downloadPath) {
-    var x=new XMLHttpRequest();
+    let x=new XMLHttpRequest();
 	x.open("GET", downloadPath, true);
 	x.responseType = 'blob';
 	x.onload=function(e){download(x.response, '200.gif', "image/gif" ); }

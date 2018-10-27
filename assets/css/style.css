@@ -1,6 +1,13 @@
-/* .search-results {
-    display: none;
-} */
+.search-results {
+	display: none;
+	position: relative;
+}
+
+.search-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
 
 /*image gallery*/
 .image-checkbox {
