@@ -55,10 +55,6 @@
 	display: none;
 }
 
-.footer-add-favorites {
-	display: none;
-}
-
 .bg-primary, .btn-primary {
 	background-color: #4484CE;
 }
@@ -71,6 +67,11 @@
 	max-width: 800px;
 }
 
-.card-icon-color, .card-icon-color a {
+.card-icon-color {
 	color: #4484CE;
+}
+
+.hover-icon:hover {
+	transform: scale(1.25);
+	cursor: pointer;
 }

@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    <!-- Search Section -->
     <div class="container-fluid search-screen h-100">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col text-center">
@@ -38,7 +39,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Primary Screen -->
     <div class="container-fluid primary-screen">
+        <!-- Navigation Bar - leveraging Bootstrap -->
         <div class="row">
             <div class="col p-0 m-0">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
@@ -50,14 +54,19 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" href="#">My Favorites</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    My Favorites
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item my-favorites" href="#">None yet</a>
+                                </div>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-warning" id="reset-screen" href="#">Reset Screen</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-warning" href="#">Clear Favorites</a>
+                                <a class="nav-link text-warning" id="clear-favorites" href="#">Clear Favorites</a>
                             </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
@@ -68,29 +77,26 @@
                 </nav>
             </div>
         </div>
+        <!-- Search Results posted here -->
         <div class="row text-center">
             <div class="col search-results p-2 bg-warning">
                 <div class="search-close"><i class="fa fa-window-close fa-2x" aria-hidden="true"></i></div>
                 <div class="search-output"></div>
             </div>
         </div>
+        <!-- GIFs are posted here -->
         <div class="row">
             <div class="input-group col display-cards d-flex justify-content-center">
             </div>
         </div>
     </div>
 
+    <!-- Add movies to the collection -->
     <footer class="footer bg-dark footer-add-movies">
         <div class="p-3">
             <button type="button" class="btn btn-primary add-movies">Add Movies</button>
         </div>
     </footer>    
-    
-    <footer class="footer bg-dark footer-add-favorites">
-        <div class="p-3">
-            <button type="button" class="btn btn-primary add-favorites">Add Favorites</button>
-        </div>
-    </footer>
 </body>
 
 </html>
