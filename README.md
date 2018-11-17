@@ -9,3 +9,7 @@
 4. GIFs are downloadable by clicking on the download icon (download.js was leveraged)
 5. My favorites section that persists after browser is closed (leverages localstorage) by clicking on the heart icon
 5. Fully responsive (huge screen vs mobile)
+
+
+### Link
+https://korelin2k.github.io/gif-finder/
